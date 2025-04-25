@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Table,
@@ -28,9 +27,7 @@ interface JobsTableProps {
 
 const JobsTable: React.FC<JobsTableProps> = ({ jobs }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string | undefined>(
-    undefined
-  );
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
@@ -43,7 +40,7 @@ const JobsTable: React.FC<JobsTableProps> = ({ jobs }) => {
       job.product.toLowerCase().includes(searchTerm.toLowerCase()) ||
       job.userId.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = !statusFilter || job.jobStatus === statusFilter;
+    const matchesStatus = statusFilter === "all" || job.jobStatus === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
@@ -79,7 +76,7 @@ const JobsTable: React.FC<JobsTableProps> = ({ jobs }) => {
             <SelectValue placeholder="All Statuses" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Statuses</SelectItem>
+            <SelectItem value="all">All Statuses</SelectItem>
             <SelectItem value="Pending">Pending</SelectItem>
             <SelectItem value="Running">Running</SelectItem>
             <SelectItem value="Completed">Completed</SelectItem>
